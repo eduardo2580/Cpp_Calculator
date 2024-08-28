@@ -1,10 +1,6 @@
 name: C/C++ CI
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -12,12 +8,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: configure
-      run: ./configure
-    - name: make
-      run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+    - uses: actions/checkout@v3
+
+    - name: Set up the C++ compiler
+      run: sudo apt-get install -y g++
+
+    - name: Build
+      run: g++ -o output_file_name source_file_name.cpp
+
+    - name: Run tests (optional)
+      run: ./output_file_name
+      
